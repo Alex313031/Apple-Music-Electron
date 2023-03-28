@@ -32,5 +32,5 @@ For more information surrounding configuration, compiling and other developer do
 
 ### Disclaimer
 *This project is NOT affiliated with Apple in any way shape or form. The project is open source and free to use (with an Apple Music subscription)
-for any legal concerns contact me at <a href="mailto:cryptofyre@cryptofyre.org">cryptofyre@cryptofyre.org</a>.*
+for any legal concerns contact me at <a href="mailto:Alex313031@gmail.com">Alex313031@gmail.com</a>.*
 <br>
