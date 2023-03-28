@@ -1,64 +1,68 @@
 {
   "name": "apple-music-electron",
   "applicationId": "AppleMusicElectron",
+  "appName": "Apple Music",
   "productName": "Apple Music",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "An open-source, GPU-accelerated Electron application that emulates the Apple Music website in a customizable interface.",
   "license": "MIT",
-  "author": "Apple Music Electron Team <cryptofyre@cryptofyre.org> (https://applemusicelectron.com)",
-  "repository": "https://github.com/Apple-Music-Electron/Apple-Music-Electron.git",
+  "author": "Alex313031 <alex313031@gmail.com> (https://applemusicelectron.com)",
+  "repository": "https://github.com/Alex313031/Apple-Music-Electron.git",
   "bugs": {
-    "url": "https://github.com/Apple-Music-Electron/Apple-Music-Electron/issues?q=is%3Aopen+is%3Aissue+label%3Abug"
+    "url": "https://github.com/Alex313031/Apple-Music-Electron/issues"
   },
   "homepage": "https://applemusicelectron.com/",
   "buildResources": "resources",
   "scripts": {
     "init": "yarn install --force",
     "start": "electron --enable-accelerated-mjpeg-decode --enable-accelerated-video --disable-gpu-driver-bug-workarounds --ignore-gpu-blacklist --enable-native-gpu-memory-buffers .",
-    "pack": "electron-builder --dir",
+    "build": "electron-builder --dir",
+    "clean": "rm -r -f node_modules/ && rm -r -f dist/* && yarn cache clean",
     "dist": "electron-builder",
+    "start": "./node_modules/electron/dist/electron --no-sandbox ./",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
     "@sentry/electron": "^2.5.4",
-    "castv2-client": "github:vapormusic/node-castv2-client",
+    "castv2-client": "git+https://github.com/vapormusic/node-castv2-client.git#bf1397a",
     "chmodr": "^1.2.0",
     "discord-rpc": "^4.0.1",
-    "electron-acrylic-window": "^0.5.9",
-    "electron-log": "^4.4.1",
-    "electron-store": "^8.0.1",
-    "electron-updater": "^4.3.9",
+    "electron-acrylic-window": "^0.5.11",
+    "electron-log": "^4.4.8",
+    "electron-store": "^8.1.0",
+    "electron-updater": "^4.5.2",
     "electron-window-state": "^5.0.3",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "extract-zip": "^2.0.1",
     "get-port": "^5.1.1",
     "git-clone": "^0.2.0",
     "lastfmapi": "^0.1.1",
-    "mdns-js": "github:bitfocus/node-mdns-js",
+    "mdns-js": "git+https://github.com/bitfocus/node-mdns-js.git#1af6b83",
     "mpris-service": "^2.1.2",
-    "naudiodon": "github:vapormusic/naudiodon",
-    "node-fetch": "3.0.0-beta.9",
+    "naudiodon": "git+https://github.com/vapormusic/naudiodon.git#a72fa25",
+    "node-fetch": "3.0.0-beta.10",
     "node-ssdp": "^4.0.1",
     "opus-media-recorder": "^0.8.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "regedit": "^5.0.0",
-    "register-scheme": "github:devsnek/node-register-scheme",
+    "regedit": "^5.1.2",
+    "register-scheme": "^0.0.2",
     "request": "^2.88.2",
     "rimraf": "^3.0.2",
-    "source-map-support": "^0.5.20",
-    "upnp-mediarenderer-client": "github:vapormusic/node-upnp-mediarenderer-client",
+    "source-map-support": "^0.5.21",
+    "upnp-mediarenderer-client": "git+https://github.com/vapormusic/node-upnp-mediarenderer-client.git#d485693",
     "v8-compile-cache": "^2.3.0",
     "wavefile": "^11.0.0",
     "xml2js": "^0.4.23",
     "youtube-search-without-api-key": "github:vapormusic/youtube-search"
   },
   "devDependencies": {
-    "electron": "https://github.com/castlabs/electron-releases.git",
-    "electron-builder": "^22.13.1",
+    "electron": "git+https://github.com/castlabs/electron-releases.git#0fa2dc4",
+    "electron-builder": "^22.14.13",
+    "electron-to-chromium": "1.4.333",
     "electron-webpack": "^2.8.2",
     "musickit-typescript": "^1.2.4",
-    "webpack": "~5.65.0"
+    "webpack": "5.69.1"
   },
   "fileAssociations": [
     {
@@ -81,9 +85,9 @@
     }
   ],
   "build": {
-    "electronVersion": "15.3.2",
+    "electronVersion": "15.5.7",
     "electronDownload": {
-      "version": "15.3.2-wvvmp",
+      "version": "15.5.7-wvvmp",
       "mirror": "https://github.com/castlabs/electron-releases/releases/download/v"
     },
     "appId": "apple-music",
@@ -106,10 +110,7 @@
     ],
     "linux": {
       "target": [
-        "AppImage",
-        "deb",
-        "snap",
-        "rpm"
+        "deb"
       ],
       "synopsis": "Electron wrapper for Apple Music Web App.",
       "category": "AudioVideo",

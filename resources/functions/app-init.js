@@ -57,20 +57,20 @@ module.exports = () => {
             lastfmNowPlaying: true,
             analyticsEnabled: true,
             lastfmScrobbleDelay: 30,
-            checkForUpdates: true
+            checkForUpdates: false
         },
         visual: {
             theme: "default",
             frameType: "",
             transparencyEffect: "",
             transparencyTheme: "appearance-based",
-            transparencyDisableBlur: true,
+            transparencyDisableBlur: false,
             transparencyMaximumRefreshRate: "",
             streamerMode: false,
             removeUpsell: true,
-            removeAppleLogo: true,
+            removeAppleLogo: false,
             removeFooter: true,
-            removeScrollbars: true,
+            removeScrollbars: false,
             useOperatingSystemAccent: false,
             albumartNPPLaylist: false,
             scaling: 1,
@@ -86,7 +86,7 @@ module.exports = () => {
         },
         window: {
             appStartupBehavior: "",
-            closeButtonMinimize: true,
+            closeButtonMinimize: false,
             alwaysOnTop: false
         },
         advanced: {
@@ -94,10 +94,11 @@ module.exports = () => {
             hardwareAcceleration: true,
             verboseLogging: false,
             autoUpdaterBetaBuilds: false,
-            useBetaSite: true,
+            useBetaSite: false,
             preventMediaKeyHijacking: false,
             devToolsOnStartup: false,
-            allowMultipleInstances: false
+            allowMultipleInstances: false,
+            experimentalFeatures: true
         },
         tokens: {
             lastfm: ""

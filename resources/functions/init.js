@@ -23,10 +23,10 @@ const init = {
         console.verbose('[InitializeBase] Started.');
 
         // Disable CORS
-        app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors')
-        app.commandLine.appendSwitch('high-dpi-support', 'true')
+        app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
+        app.commandLine.appendSwitch('high-dpi-support', 'true');
         if (process.platform === "win32") {
-            app.commandLine.appendSwitch('force-device-scale-factor', '1')
+            app.commandLine.appendSwitch('force-device-scale-factor', '1');
         }
 
         if (app.cfg.get('advanced.verboseLogging')) {
@@ -43,7 +43,21 @@ const init = {
 
         // GPU Hardware Acceleration
         if (!app.cfg.get('advanced.hardwareAcceleration')) {
-            app.commandLine.appendSwitch('disable-gpu')
+			console.log("[Apple-Music-Electron] Hardware GPU Acceleration is disabled.")
+            app.commandLine.appendSwitch('disable-gpu');
+        }
+        if (app.cfg.get('advanced.hardwareAcceleration')) {
+			console.log("[Apple-Music-Electron] Hardware GPU Acceleration is enabled.")
+            app.commandLine.appendSwitch('ignore-gpu-blocklist');
+        }
+
+        // Experimental Features
+        if (app.cfg.get('advanced.experimentalFeatures')) {
+			console.log("[Apple-Music-Electron] Experimental features are enabled.")
+            app.commandLine.appendSwitch('enable-experimental-web-platform-features');
+            app.commandLine.appendSwitch('enable-ui-devtools');
+            app.commandLine.appendSwitch('enable-quic');
+            app.commandLine.appendSwitch('new-canvas-2d-api');
         }
 
         // Registry
