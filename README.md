@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/85196642/142362989-ca1cb245-d9f1-4345-99fb-939171fb34ee.gif" width="80%" alt="Banner"><br><br>
+  <img src="https://raw.githubusercontent.com/Alex313031/Apple-Music-Electron/master/banner.gif" width="80%" alt="Banner"><br><br>
   <img src="https://img.shields.io/github/release/Alex313031/Apple-Music-Electron.svg?style=flat" alt="GitHub Releases"/>
   <img src="https://img.shields.io/github/stars/Alex313031/Apple-Music-Electron" alt="GitHub Stars"/>
   <img src="https://img.shields.io/github/forks/Alex313031/Apple-Music-Electron" alt="GitHub Forks"/>
@@ -10,10 +10,7 @@
   <a target="_blank" href="https://discord.gg/CezHYdXHEM"><img src="https://img.shields.io/discord/843954443845238864?label=Discord&color=5865F2&logo=discord&logoColor=white&style=flat" alt="Discord"/></a>
   <a target="_blank" href="https://twitter.com/GitCider"><img src="https://img.shields.io/twitter/follow/GitCider?label=Twitter&color=%231DA1F2&logo=twitter&style=flat" alt="Twitter"/></a>
   <a target="_blank" href="https://reddit.com/r/applemusicelectron"><img src="https://custom-icon-badges.herokuapp.com/reddit/subreddit-subscribers/applemusicelectron?label=Reddit&color=FF5700&logo=redditnew" alt="Reddit"/></a>
-  <br><br>
-  <img src="https://github.com/Alex313031/Apple-Music-Electron/actions/workflows/build-analyze-win.yml/badge.svg" alt="Windows Build Status"/>
-  <img src="https://github.com/Alex313031/Apple-Music-Electron/actions/workflows/build-analyze-linux.yml/badge.svg" alt="Linux Build Status"/>
-  <img src="https://github.com/Alex313031/Apple-Music-Electron/actions/workflows/build-analyze-macos.yml/badge.svg" alt="macOS Build Status"/>
+  <br>
 </p>
 
 #### Links
