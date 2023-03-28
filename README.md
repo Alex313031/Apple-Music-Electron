@@ -33,12 +33,4 @@ For more information surrounding configuration, compiling and other developer do
 ### Disclaimer
 *This project is NOT affiliated with Apple in any way shape or form. The project is open source and free to use (with an Apple Music subscription)
 for any legal concerns contact me at <a href="mailto:cryptofyre@cryptofyre.org">cryptofyre@cryptofyre.org</a>.*
-
-<p align="center">
-  <br>
-  <a> Project Supporters </a>
-  <br>
-  <br>
-  <img href="https://www.jetbrains.com/" width="120px" height="125px" src="https://logonoid.com/images/jetbrains-logo.png" alt="JetBrains">
-  <img href="https://www.macstadium.com/" width="300px" src="https://user-images.githubusercontent.com/33162551/124784795-df5d4c80-df0b-11eb-99a7-dc2b1cfb81bd.png" alt="MacStadium">
-</p>
+<br>
