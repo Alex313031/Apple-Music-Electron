@@ -6,12 +6,12 @@
   "version": "3.0.2",
   "description": "An open-source, GPU-accelerated Electron application that emulates the Apple Music website in a customizable interface.",
   "license": "MIT",
-  "author": "Alex313031 <alex313031@gmail.com> (https://applemusicelectron.com)",
+  "author": "Alex313031 <alex313031@gmail.com> (https://thorium.rocks)",
   "repository": "https://github.com/Alex313031/Apple-Music-Electron.git",
   "bugs": {
     "url": "https://github.com/Alex313031/Apple-Music-Electron/issues"
   },
-  "homepage": "https://applemusicelectron.com/",
+  "homepage": "https://web.archive.org/web/20220117043557/https://applemusicelectron.com/",
   "buildResources": "resources",
   "scripts": {
     "init": "yarn install --force",
