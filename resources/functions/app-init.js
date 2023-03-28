@@ -64,7 +64,7 @@ module.exports = () => {
             frameType: "",
             transparencyEffect: "",
             transparencyTheme: "appearance-based",
-            transparencyDisableBlur: false,
+            transparencyDisableBlur: true,
             transparencyMaximumRefreshRate: "",
             streamerMode: false,
             removeUpsell: true,
