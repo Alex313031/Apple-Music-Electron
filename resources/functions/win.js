@@ -1,29 +1,68 @@
-const {app, Menu, Notification, TouchBar, BrowserWindow} = require("electron"),
+const {app, Menu, components, Notification, TouchBar, ipcMain, shell, BrowserWindow} = require("electron"),
     {TouchBarButton, TouchBarLabel, TouchBarSpacer} = TouchBar,
-    {join} = require("path"),
+    {join, resolve} = require('path'),
     windowStateKeeper = require("electron-window-state"),
-    {initAnalytics} = require('./utils');
+    {initAnalytics} = require('./utils'),
+    electronLog = require('electron-log'),
+    contextMenu = require('electron-context-menu');
 initAnalytics();
 
-module.exports = {
+var appVersion = app.getVersion();
 
+module.exports = {
     SetApplicationMenu: () => {
-        if (process.platform !== "darwin") return;
+        // if (process.platform !== "darwin") return;
 
         Menu.setApplicationMenu(Menu.buildFromTemplate([
             {
                 label: app.getName(),
                 submenu: [
-                    { role: 'about' },
-                    { type: 'separator' },
-                    { role: 'services' },
-                    { type: 'separator' },
-                    { role: 'hide' },
-                    { role: 'hideOthers' },
-                    { role: 'unhide' },
-                    { type: 'separator' },
+                    {
+                      label: 'Go Back',
+                      accelerator: 'Alt+Left',
+                      click(item, focusedWindow) {
+                        if (focusedWindow) focusedWindow.webContents.goBack();
+                        electronLog.info('Navigated back');
+                      }
+                    },
+                    {
+                      label: 'Go Forward',
+                      accelerator: 'Alt+Right',
+                      click(item, focusedWindow) {
+                        if (focusedWindow) focusedWindow.webContents.goForward();
+                        electronLog.info('Navigated forward');
+                      }
+                    },
                     { role: 'quit' }
                   ]
+            },
+            // {
+            //     label: app.getName(),
+            //     submenu: [
+            //         { role: 'about' },
+            //         { type: 'separator' },
+            //         { role: 'services' },
+            //         { type: 'separator' },
+            //         { role: 'hide' },
+            //         { role: 'hideOthers' },
+            //         { role: 'unhide' },
+            //         { type: 'separator' },
+            //         { role: 'quit' }
+            //       ]
+            // },
+            {
+                label: 'Edit',
+                submenu: [
+                  { role: 'undo' },
+                  { role: 'redo' },
+                  { type: 'separator' },
+                  { role: 'cut' },
+                  { role: 'copy' },
+                  { role: 'paste' },
+                  { role: 'pasteandmatchstyle' },
+                  { role: 'delete' },
+                  { role: 'selectall' }
+                ]
             },
             {
                 label: 'View',
@@ -43,49 +82,138 @@ module.exports = {
                 label: 'Window',
                 role: 'window',
                 submenu: [
+                    {
+                      label: 'Go Back',
+                      accelerator: 'Alt+Left',
+                      click(item, focusedWindow) {
+                        if (focusedWindow) focusedWindow.webContents.goBack();
+                        electronLog.info('Navigated back');
+                      }
+                    },
+                    {
+                      label: 'Go Forward',
+                      accelerator: 'Alt+Right',
+                      click(item, focusedWindow) {
+                        if (focusedWindow) focusedWindow.webContents.goForward();
+                        electronLog.info('Navigated forward');
+                      }
+                    },
+                    { type: 'separator' },
                     { role: 'minimize' },
-                    { role: 'zoom' },
                     { type: 'separator' },
-                    { role: 'front' },
-                    { type: 'separator' },
-                    { role: 'window' }
+                    { role: 'zoom', visible: process.platform === 'darwin' },
+                    { role: 'front', visible: process.platform === 'darwin' },
+                    { role: 'window', visible: process.platform === 'darwin' },
+                    {
+                        label: 'Open Electron DevTools',
+                        accelerator: process.platform === 'darwin' ? 'CmdorCtrl+Shift+F12' : 'F12',
+                        click() {
+                            app.win.openDevTools({ mode: 'detach' });
+                        }
+                    }
                   ]
             },
             {
-                label: 'Support',
+                label: 'Developer',
+                submenu: [
+                  {
+                    label: 'Open chrome://gpu',
+                    accelerator: 'CmdorCtrl+Alt+G',
+                    click() {
+                      const gpuWindow = new BrowserWindow({width: 900, height: 700, title: "GPU Internals"});
+                      gpuWindow.loadURL('chrome://gpu');
+                      electronLog.info('Opened chrome://gpu');
+                    }
+                  },
+                  {
+                    label: 'Open chrome://process-internals',
+                    accelerator: 'CmdorCtrl+Alt+P',
+                    click() {
+                      const procsWindow = new BrowserWindow({width: 900, height: 700, title: "Process Model Internals"});
+                      procsWindow.loadURL('chrome://process-internals');
+                      electronLog.info('Opened chrome://process-internals');
+                    }
+                  },
+                  {
+                    label: 'Open chrome://media-internals',
+                    accelerator: 'CmdorCtrl+Alt+M',
+                    click() {
+                      const mediaWindow = new BrowserWindow({width: 900, height: 700, title: "Media Internals"});
+                      mediaWindow.loadURL('chrome://media-internals');
+                      electronLog.info('Opened chrome://media-internals');
+                    }
+                  },
+                  { type: 'separator' },
+                  {
+                    label: 'Open Google Window',
+                    click() {
+                      const googleWindow = new BrowserWindow({width: 1024, height: 768});
+                      googleWindow.loadURL('https://www.google.com/');
+                    }
+                  },
+                  { type: 'separator' },
+                  {
+                      label: 'Open Configuration File in Editor',
+                      click() {
+                          app.cfg.openInEditor()
+                      }
+                  },
+                  {
+                    label: 'Restart App',
+                    click() {
+                      electronLog.warn('Restarting App...');
+                      app.relaunch();
+                      app.quit();
+                    }
+                  }
+                ]
+            },
+            {
+                label: 'About',
                 role: 'help',
                 submenu: [
                     {
-                        label: 'Discord',
+                        label: 'GitHub Wiki',
                         click() {
-                            require("shell").openExternal("https://discord.gg/CezHYdXHEM")
+                            new BrowserWindow({width: 1024, height: 768}).loadURL("https://github.com/Alex313031/Apple-Music-Electron/wiki");
                         }
                     },
                     {
-                        label: 'GitHub Wiki',
+                        label: 'File a Bug/Issue',
                         click() {
-                            require("shell").openExternal("https://github.com/Apple-Music-Electron/Apple-Music-Electron/wiki")
+                            shell.openExternal("https://github.com/Alex313031/Apple-Music-Electron/issues/new/choose");
                         }
                     },
                     { type: 'separator' },
                     {
                         label: 'View License',
                         click() {
-                            require("shell").openExternal("https://github.com/Apple-Music-Electron/Apple-Music-Electron/blob/master/LICENSE")
-                        }
-                    },
-                    { type: 'separator' },
-                    {
-                        label: 'Toggle Developer Tools',
-                        accelerator: 'Option+CommandOrControl+I',
-                        click() {
-                            app.win.webContents.openDevTools()
+                            new BrowserWindow({width: 600, height: 532, title: "License",}).loadFile(join(__dirname, '../html/LICENSE.md'));
+                            electronLog.info('Viewed License');
                         }
                     },
                     {
-                        label: 'Open Configuration File in Editor',
+                        label: 'About App',
+                        accelerator: 'CmdorCtrl+Alt+A',
                         click() {
-                            app.cfg.openInEditor()
+                          const aboutWindow = new BrowserWindow({
+                            width: 532,
+                            height: 500,
+                            title: "About Apple Music Electron",
+                            webPreferences: {
+                              nodeIntegration: false,
+                              nodeIntegrationInWorker: false,
+                              contextIsolation: false,
+                              experimentalFeatures: true,
+                              webviewTag: true,
+                              devTools: true,
+                              enableRemoteModule: true,
+                              preload: join(__dirname, '../js/client-preload.js'),
+                            },
+                          });
+                          require("@electron/remote/main").enable(aboutWindow.webContents);
+                          aboutWindow.loadFile(join(__dirname, '../html/about.html'));
+                          electronLog.info('Opened about.html');
                         }
                     }
                 ]
@@ -97,12 +225,12 @@ module.exports = {
 
         if (visibility) {
             app.tray.setContextMenu(Menu.buildFromTemplate([
-                {
-                    label: 'Check for Updates',
-                    click: function () {
-                        app.ame.utils.checkForUpdates(true)
-                    }
-                },
+                // {
+                //     label: 'Check for Updates',
+                //     click: function () {
+                //         app.ame.utils.checkForUpdates(true)
+                //     }
+                // },
                 {
                     label: 'Minimize to Tray',
                     click: function () {
@@ -120,12 +248,12 @@ module.exports = {
             ]));
         } else {
             app.tray.setContextMenu(Menu.buildFromTemplate([
-                {
-                    label: 'Check for Updates',
-                    click: function () {
-                        app.ame.utils.checkForUpdates(true)
-                    }
-                },
+                // {
+                //     label: 'Check for Updates',
+                //     click: function () {
+                //         app.ame.utils.checkForUpdates(true)
+                //     }
+                // },
                 {
                     label: `Show ${app.getName()}`,
                     click: function () {
@@ -294,7 +422,7 @@ module.exports = {
         });
 
         const options = {
-            icon: join(__dirname, `../icons/icon.ico`),
+            icon: process.platform === "linux" ? join(__dirname, '../icons/icon.png') : join(__dirname, '../icons/icon.ico'),
             width: mainWindowState.width,
             height: mainWindowState.height,
             x: mainWindowState.x,
@@ -304,8 +432,9 @@ module.exports = {
             frame: (process.platform !== 'win32' && !(app.cfg.get('visual.frameType') === 'mac' || app.cfg.get('visual.frameType') === 'mac-right')),
             title: app.getName(),
             resizable: true,
-            show: false,
-            opacity: 0,
+            toolbar: true,
+            show: true,
+            opacity: 1,
             // Enables DRM
             webPreferences: {
                 plugins: true,
@@ -316,6 +445,10 @@ module.exports = {
                 contextIsolation: false,
                 webSecurity: true,
                 sandbox: true,
+                experimentalFeatures: true,
+                webviewTag: true,
+                devTools: true,
+                enableRemoteModule: true,
                 nativeWindowOpen: true
             }
         };
@@ -358,7 +491,8 @@ module.exports = {
             win.setAlwaysOnTop(true)
         }
 
-        win.setMenuBarVisibility(false); // Hide that nasty menu bar
+        // Hide that nasty menu bar
+        // win.setMenuBarVisibility(false);
         if (app.cfg.get('advanced.devToolsOnStartup')) win.webContents.openDevTools({mode: 'detach'}); // Enables Detached DevTools
 
         // Register listeners on Window to track size and position of the Window.
@@ -366,6 +500,50 @@ module.exports = {
 
         // Load the Website
         app.ame.load.LoadWebsite(win)
+        
+        //Enable remote module
+        require("@electron/remote/main").enable(win.webContents);
+
+        contextMenu({
+           // Chromium context menu defaults
+           showSelectAll: true,
+           showCopyImage: true,
+           showCopyImageAddress: true,
+           showSaveImageAs: true,
+           showCopyVideoAddress: true,
+           showSaveVideoAs: true,
+           showCopyLink: true,
+           showSaveLinkAs: true,
+           showInspectElement: true,
+           showLookUpSelection: true,
+           showSearchWithGoogle: true,
+           prepend: (defaultActions, parameters, browserWindow) => [
+           { label: 'Open Video in New Window',
+              // Only show it when right-clicking video
+              visible: parameters.mediaType === 'video',
+              click: (linkURL) => {
+                  const newWin = new BrowserWindow({
+                    title: 'New Window',
+                    width: 1024,
+                    height: 768,
+                    webPreferences: {
+                      nodeIntegration: false,
+                      nodeIntegrationInWorker: false,
+                      contextIsolation: false,
+                      sandbox: false,
+                      experimentalFeatures: true,
+                      webviewTag: true,
+                      devTools: true,
+                      javascript: true,
+                      plugins: true,
+                      enableRemoteModule: true,
+                    },
+                  });
+                  const vidURL = parameters.srcURL;
+               newWin.loadURL(vidURL);
+              }
+           }]
+        });
 
         return win
     },

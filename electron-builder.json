@@ -1,0 +1,94 @@
+{
+  "electronVersion": "19.1.9",
+  "electronDownload": {
+    "version": "19.1.9+wvcus",
+    "mirror": "https://github.com/castlabs/electron-releases/releases/download/v"
+  },
+  "asar": true,
+  "appId": "apple-music-electron",
+  "productName": "Apple Music",
+  "generateUpdatesFilesForAllChannels": false,
+  "directories": {
+      "app": "./",
+      "buildResources": "assets",
+      "output": "dist"
+  },
+  "files": [
+    "**/*",
+    "./resources/icons/icon.*"
+  ],
+  "extraFiles": [
+    {
+      "from": "assets/README.txt"
+    }
+  ],
+  "extraResources": [
+    {
+      "from": "node_modules/regedit/vbs",
+      "to": "regedit/vbs",
+      "filter": [
+        "**/*"
+      ]
+    }
+  ],
+  "linux": {
+    "target": [
+      "AppImage",
+      "deb",
+      "zip"
+    ],
+    "maintainer": "Alex313031",
+    "vendor": "Alex313031",
+    "synopsis": "An open-source, GPU-accelerated Electron application that presents the Apple Music website in a customizable interface.",
+    "category": "AudioVideo",
+    "artifactName": "apple-music_${version}_${arch}.${ext}",
+    "executableName": "apple-music-electron",
+    "desktop": {
+      "Name": "Apple Music",
+      "StartupWMClass": "apple-music-electron",
+      "Keywords": "apple;music;electron;",
+      "Icon": "apple-music-electron"
+    }
+  },
+  "win": {
+    "target": [
+      "zip",
+      "nsis"
+    ],
+    "publisherName": "Alex313031",
+    "executableName": "apple_music_electron",
+    "artifactName": "apple_music_win64_${version}_${arch}.${ext}"
+  },
+  "nsis": {
+    "shortcutName": "Apple Music",
+    "artifactName": "apple_music_setup_${version}_${arch}.${ext}",
+    "deleteAppDataOnUninstall": false,
+    "uninstallDisplayName": "Apple Music Electron ${version}"
+  },
+  "appx": {
+    "applicationId": "applemusicelectron",
+    "publisher": "CN=cryptofyre",
+    "displayName": "Apple Music Electron",
+    "identityName": "AppleMusicElectron",
+    "backgroundColor": "#CD001A",
+    "setBuildNumber": true
+  },
+  "mac": {
+    "category": "public.app-category.music",
+    "entitlements": "resources/entitlements.mac.plist",
+    "darkModeSupport": true
+  },
+  "protocols": [
+    {
+      "name": "Apple Music Electron",
+      "schemes": [
+        "ame",
+        "itms",
+        "itmss",
+        "musics",
+        "music"
+      ]
+    }
+  ],
+  "extends": null
+}

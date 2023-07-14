@@ -1,7 +1,8 @@
-const {app, protocol, dialog} = require("electron"),
+const {app, components, protocol, dialog} = require("electron"),
     {join, resolve} = require("path"),
     {existsSync, createReadStream, unlink, rmSync} = require("fs"),
-    Store = require('electron-store');
+    Store = require('electron-store'),
+    electronLog = require('electron-log');
 
 module.exports = () => {
 
@@ -124,7 +125,18 @@ module.exports = () => {
     app.cfg.watch = true;
     app.isQuiting = false;
 
-    app.whenReady().then(() => {
+    protocol.registerSchemesAsPrivileged([
+        { scheme: 'http', privileges: { standard: true, secure: true, bypassCSP: true, allowServiceWorkers: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
+        { scheme: 'file', privileges: { standard: true, secure: true, bypassCSP: true, allowServiceWorkers: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
+        { scheme: 'ameres', privileges: { bypassCSP: true, secure: true, allowServiceWorkers: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
+        { scheme: 'themes', privileges: { bypassCSP: true, secure: true, allowServiceWorkers: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
+        { scheme: 'plugins', privileges: { bypassCSP: true, secure: true, allowServiceWorkers: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
+        { scheme: 'https', privileges: { standard: true, secure: true,  bypassCSP: true, allowServiceWorkers: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
+        { scheme: 'mailto', privileges: { standard: true } },
+       ]);
+    app.whenReady().then(async () => {
+        await components.whenReady();
+        electronLog.info('components ready:', components.status());
         protocol.registerFileProtocol('themes', (request, callback) => {
             const url = request.url.substr(7)
             callback({

@@ -3,7 +3,8 @@ const {app, nativeTheme, nativeImage, Tray} = require("electron"),
     os = require("os"),
     {existsSync, readdirSync} = require("fs"),
     regedit = require("regedit"),
-    {initAnalytics} = require('./utils');
+    {initAnalytics} = require('./utils'),
+    electronLog = require('electron-log');
 initAnalytics();
 
 const init = {
@@ -49,6 +50,7 @@ const init = {
         if (app.cfg.get('advanced.hardwareAcceleration')) {
 			console.log("[Apple-Music-Electron] Hardware GPU Acceleration is enabled.")
             app.commandLine.appendSwitch('ignore-gpu-blocklist');
+            app.commandLine.appendSwitch('enable-gpu-rasterization');
         }
 
         // Experimental Features
@@ -70,6 +72,23 @@ const init = {
 
         // Disable the Media Session to allow MPRIS to be the primary service
         if (process.platform === "linux") app.commandLine.appendSwitch('disable-features', 'MediaSessionService');
+        
+        // Enable useful features
+        if (process.platform === 'linux') {
+            app.commandLine.appendSwitch(
+            'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL,VaapiVideoDecoder,VaapiVideoEncoder',
+            );
+        }
+        // VAAPI is only applicable on linux so copy above without vaapi flags
+        if (process.platform === 'win32' || process.platform === 'darwin') {
+            app.commandLine.appendSwitch(
+            'enable-features','CanvasOopRasterization,CSSColorSchemeUARendering,ImpulseScrollAnimations,ParallelDownloading,Portals,StorageBuckets,JXL',
+            );
+        }
+
+        if (process.env.NODE_ENV === 'development') {
+            app.commandLine.appendSwitch('remote-debugging-port', '9222');
+        }
 
         // Assign Default Variables
         app.isQuiting = (app.isQuiting ? app.isQuiting : false);

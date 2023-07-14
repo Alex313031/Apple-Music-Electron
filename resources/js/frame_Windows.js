@@ -65,9 +65,9 @@ try {
         <div class="web-main-drag">
         </div>
         <div class="web-nav-window-controls">
-            <span id="minimize" onclick="ipcRenderer.send('minimize')"></span>
-            <span id="maximize" onclick="ipcRenderer.send('maximize')"></span>
-            <span id="close" onclick="ipcRenderer.send('close')"></span>
+            <span id="minimize""></span>
+            <span id="maximize""></span>
+            <span id="close""></span>
         </div>
         `);
 
@@ -85,6 +85,22 @@ try {
         if (document.getElementById('web-navigation-container')) {
             document.getElementById('web-navigation-container').style.gridTemplateRows = 'auto auto 1fr auto'
         }
+
+        /* listen to click events */
+        const minimizedButtonPressed = document.getElementById('minimize');
+        minimizedButtonPressed.addEventListener("click", () => {
+            ipcRenderer.send('minimize');
+        });
+
+        const maximizeButtonPressed = document.getElementById('maximize');
+        maximizeButtonPressed.addEventListener("click", () => {
+            ipcRenderer.send('maximize');
+        });
+
+        const closeButtonPressed = document.getElementById('close');
+        closeButtonPressed.addEventListener("click", () => {
+            ipcRenderer.send('close');
+        });
     }
 } catch (e) {
     console.error("[CSS] Error while trying to apply frame_Windows.js", e);

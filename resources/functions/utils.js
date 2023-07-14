@@ -3,6 +3,8 @@ const {
     nativeImage,
     nativeTheme,
     Notification,
+    components,
+    shell,
     dialog
 } = require("electron"), {
         existsSync,

@@ -3,8 +3,8 @@
   "applicationId": "AppleMusicElectron",
   "appName": "Apple Music",
   "productName": "Apple Music",
-  "version": "3.0.2",
-  "description": "An open-source, GPU-accelerated Electron application that emulates the Apple Music website in a customizable interface.",
+  "version": "3.1.1",
+  "description": "An open-source, GPU-accelerated Electron application that presents the Apple Music website in a customizable interface.",
   "license": "MIT",
   "author": "Alex313031 <alex313031@gmail.com> (https://thorium.rocks)",
   "repository": "https://github.com/Alex313031/Apple-Music-Electron.git",
@@ -12,41 +12,47 @@
     "url": "https://github.com/Alex313031/Apple-Music-Electron/issues"
   },
   "homepage": "https://web.archive.org/web/20220117043557/https://applemusicelectron.com/",
-  "buildResources": "resources",
   "scripts": {
     "init": "yarn install --force",
-    "start": "electron --enable-accelerated-mjpeg-decode --enable-accelerated-video --disable-gpu-driver-bug-workarounds --ignore-gpu-blacklist --enable-native-gpu-memory-buffers .",
+    "dev": "electron --enable-accelerated-mjpeg-decode --enable-accelerated-video --disable-gpu-driver-bug-workarounds --enable-native-gpu-memory-buffers --verbose .",
+    "start": "electron .",
     "build": "electron-builder --dir",
-    "clean": "rm -r -f node_modules/ && rm -r -f dist/* && yarn cache clean",
-    "dist": "electron-builder",
-    "start": "./node_modules/electron/dist/electron --no-sandbox ./",
+    "clean": "rimraf node_modules && rimraf dist",
+    "distclean": "rimraf dist",
+    "burn": "rimraf package-lock.json && rimraf yarn.lock",
+    "dist-linux": "electron-builder -l",
+    "dist-win": "electron-builder -w --pd dist/win-unpacked",
+    "dist-mac": "electron-builder -m --pd dist/mac-unpacked",
+    "sign": "python3 -m castlabs_evs.vmp sign-pkg dist/win-unpacked",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@electron/remote": "2.0.10",
     "@sentry/electron": "^2.5.4",
     "castv2-client": "git+https://github.com/vapormusic/node-castv2-client.git#bf1397a",
     "chmodr": "^1.2.0",
-    "discord-rpc": "^4.0.1",
+    "discord-rpc": "git+https://github.com/Alex313031/discord-rpc.git#852d08c",
+    "electron-context-menu": "3.6.1",
     "electron-acrylic-window": "^0.5.11",
-    "electron-log": "^4.4.8",
+    "electron-log": "4.4.8",
     "electron-store": "^8.1.0",
-    "electron-updater": "^4.5.2",
+    "electron-updater": "^5.3.0",
     "electron-window-state": "^5.0.3",
     "express": "^4.18.2",
     "extract-zip": "^2.0.1",
     "get-port": "^5.1.1",
     "git-clone": "^0.2.0",
     "lastfmapi": "^0.1.1",
-    "mdns-js": "git+https://github.com/bitfocus/node-mdns-js.git#1af6b83",
+    "mdns-js": "git+https://github.com/ciderapp/node-mdns-js.git#a34c514",
     "mpris-service": "^2.1.2",
     "naudiodon": "git+https://github.com/vapormusic/naudiodon.git#a72fa25",
-    "node-fetch": "3.0.0-beta.10",
+    "node-fetch": "3.3.0",
     "node-ssdp": "^4.0.1",
     "opus-media-recorder": "^0.8.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "regedit": "^5.1.2",
-    "register-scheme": "^0.0.2",
+    "register-scheme": "git+https://github.com/ciderapp/node-register-scheme.git#2574cd1",
     "request": "^2.88.2",
     "rimraf": "^3.0.2",
     "source-map-support": "^0.5.21",
@@ -57,12 +63,12 @@
     "youtube-search-without-api-key": "github:vapormusic/youtube-search"
   },
   "devDependencies": {
-    "electron": "git+https://github.com/castlabs/electron-releases.git#0fa2dc4",
-    "electron-builder": "^22.14.13",
+    "electron": "git+https://github.com/castlabs/electron-releases.git#bd10a32",
+    "electron-builder": "23.6.0",
     "electron-to-chromium": "1.4.333",
     "electron-webpack": "^2.8.2",
     "musickit-typescript": "^1.2.4",
-    "webpack": "5.69.1"
+    "webpack": "5.75.0"
   },
   "fileAssociations": [
     {
@@ -83,71 +89,5 @@
         "music"
       ]
     }
-  ],
-  "build": {
-    "electronVersion": "15.5.7",
-    "electronDownload": {
-      "version": "15.5.7-wvvmp",
-      "mirror": "https://github.com/castlabs/electron-releases/releases/download/v"
-    },
-    "appId": "apple-music",
-    "protocols": [
-      {
-        "name": "Apple Music Electron",
-        "schemes": [
-          "ame",
-          "itms",
-          "itmss",
-          "musics",
-          "music"
-        ]
-      }
-    ],
-    "extends": null,
-    "files": [
-      "**/*",
-      "./resources/icons/icon.*"
-    ],
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb",
-        "snap",
-        "rpm"
-      ],
-      "synopsis": "Electron wrapper for Apple Music Web App.",
-      "category": "AudioVideo",
-      "icon": "apple-music-electron",
-      "executableName": "apple-music-electron"
-    },
-    "win": {
-      "target": [
-        "nsis"
-      ],
-      "icon": "./resources/icons/icon.ico"
-    },
-    "appx": {
-      "applicationId": "applemusicelectron",
-      "publisher": "CN=cryptofyre",
-      "displayName": "Apple Music Electron",
-      "identityName": "AppleMusicElectron",
-      "backgroundColor": "#CD001A",
-      "setBuildNumber": true
-    },
-    "mac": {
-      "icon": "./resources/icons/icon.icns",
-      "category": "public.app-category.music",
-      "entitlements": "resources/entitlements.mac.plist",
-      "darkModeSupport": true
-    },
-    "extraResources": [
-      {
-        "from": "node_modules/regedit/vbs",
-        "to": "regedit/vbs",
-        "filter": [
-          "**/*"
-        ]
-      }
-    ]
-  }
+  ]
 }

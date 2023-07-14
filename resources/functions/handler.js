@@ -7,6 +7,7 @@ const {
         Notification,
         BrowserWindow,
         systemPreferences,
+        components,
         nativeTheme,
         clipboard
     } = require('electron'),
@@ -23,7 +24,8 @@ const {
     {Stream} = require('stream'),
     regedit = require('regedit'),
     WaveFile = require('wavefile').WaveFile,
-    {initAnalytics} = require('./utils');
+    {initAnalytics} = require('./utils'),
+    electronLog = require('electron-log');
 initAnalytics();
 
 const handler = {
@@ -135,7 +137,7 @@ const handler = {
                 incognitoNotification = new Notification({
                     title: 'Incognito Mode Enabled',
                     body: `Listening activity is hidden.`,
-                    icon: join(__dirname, '../icons/icon.png')
+                    icon: process.platform === "linux" ? join(__dirname, '../icons/icon.png') : join(__dirname, '../icons/icon.ico'),
                 })
                 incognitoNotification.show()
             }
@@ -440,6 +442,17 @@ const handler = {
             return 1;
         })
 
+        // Remove WidevineCDM from appdata folder
+        ipcMain.on("reinstallWidevineCDM", () => {
+            const widevineCdmPath = join(app.getPath("userData"), "./WidevineCdm");
+            if (existsSync(widevineCdmPath)) {
+                rmSync(widevineCdmPath, { recursive: true, force: true })
+            }
+            // reinstall WidevineCDM
+            app.relaunch()
+            app.exit()
+        })
+
         // Electron-Store Renderer Handling for Getting Values
         ipcMain.handle('getStoreValue', (event, key, defaultValue) => {
             return (defaultValue ? app.cfg.get(key, true) : app.cfg.get(key));
@@ -669,7 +682,7 @@ const handler = {
                 width: 1,
                 height: 1,
                 show: false,
-                autoHideMenuBar: true,
+                autoHideMenuBar: false,
                 webPreferences: {
                     nodeIntegration: true,
                     contextIsolation: false
@@ -679,7 +692,7 @@ const handler = {
                 width: 1,
                 height: 1,
                 show: false,
-                autoHideMenuBar: true,
+                autoHideMenuBar: false,
                 webPreferences: {
                     nodeIntegration: true,
                     contextIsolation: false,
@@ -693,7 +706,7 @@ const handler = {
                 width: 1,
                 height: 1,
                 show: false,
-                autoHideMenuBar: true,
+                autoHideMenuBar: false,
                 webPreferences: {
                     nodeIntegration: true,
                     contextIsolation: false,
@@ -711,7 +724,7 @@ const handler = {
                         width: 1,
                         height: 1,
                         show: false,
-                        autoHideMenuBar: true,
+                        autoHideMenuBar: false,
                         webPreferences: {
                             nodeIntegration: true,
                             contextIsolation: false,
@@ -745,7 +758,7 @@ const handler = {
                         width: 1,
                         height: 1,
                         show: false,
-                        autoHideMenuBar: true,
+                        autoHideMenuBar: false,
                         webPreferences: {
                             nodeIntegration: true,
                             contextIsolation: false,
@@ -784,7 +797,7 @@ const handler = {
                         width: 100,
                         height: 100,
                         show: false,
-                        autoHideMenuBar: true,
+                        autoHideMenuBar: false,
                         webPreferences: {
                             nodeIntegration: true,
                             contextIsolation: false,
@@ -875,13 +888,13 @@ const handler = {
             let ao;
             const portAudio = require('naudiodon');
 
-            console.log(portAudio.getDevices());
+            // electronLog.info(portAudio.getDevices());
 
             ipcMain.on('getAudioDevices', function (_event) {
-                for (let id = 0; id < portAudio.getDevices().length; id++) {
-                    if (portAudio.getDevices()[id].maxOutputChannels > 0)
-                        app.win.webContents.executeJavaScript(`console.log('id:','${id}','${portAudio.getDevices()[id].name}','outputChannels:','${portAudio.getDevices()[id].maxOutputChannels}','preferedSampleRate','${portAudio.getDevices()[id].defaultSampleRate}','nativeFormats','${portAudio.getDevices()[id].hostAPIName}')`);
-                }
+                // for (let id = 0; id < portAudio.getDevices().length; id++) {
+                //     if (portAudio.getDevices()[id].maxOutputChannels > 0)
+                //         app.win.webContents.executeJavaScript(`console.log('id:','${id}','${portAudio.getDevices()[id].name}','outputChannels:','${portAudio.getDevices()[id].maxOutputChannels}','preferedSampleRate','${portAudio.getDevices()[id].defaultSampleRate}','nativeFormats','${portAudio.getDevices()[id].hostAPIName}')`);
+                // }
             })
 
             ipcMain.on('enableExclusiveAudio', function (event, id) {

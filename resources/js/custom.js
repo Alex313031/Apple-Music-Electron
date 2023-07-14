@@ -429,7 +429,7 @@ try {
                                     }
                                     let artworkURL = ((MusicKit.getInstance().nowPlayingItem != null) ? MusicKit.getInstance().nowPlayingItem.artworkURL : '').replace("{w}", 256).replace("{h}", 256);
                                     if (artworkURL == null) {
-                                        artworkURL = "https://beta.music.apple.com/assets/product/MissingArtworkMusic.svg";
+                                        artworkURL = "https://music.apple.com/assets/product/MissingArtworkMusic.svg";
                                     }
                                     if (mode === 1) {
                                         ipcRenderer.send('LyricsUpdate', lyrics, artworkURL);
@@ -449,7 +449,7 @@ try {
                                 console.log(err);
                                 let artworkURL = (MusicKitInterop.getAttributes()["artwork"]["url"]).replace("{w}", 256).replace("{h}", 256);
                                 if (artworkURL == null) {
-                                    artworkURL = "https://beta.music.apple.com/assets/product/MissingArtworkMusic.svg";
+                                    artworkURL = "https://music.apple.com/assets/product/MissingArtworkMusic.svg";
                                 }
                                 if (mode === 1) {
                                     ipcRenderer.send('LyricsUpdate', "netease=" + trackName + " " + artistName, artworkURL);
@@ -466,10 +466,10 @@ try {
                                     if (data != null && data !== "") {
                                         artworkURL = data["artwork"]["url"];
                                     } else {
-                                        artworkURL = "https://beta.music.apple.com/assets/product/MissingArtworkMusic.svg";
+                                        artworkURL = "https://music.apple.com/assets/product/MissingArtworkMusic.svg";
                                     }
                                 } catch (e) {
-                                    artworkURL = "https://beta.music.apple.com/assets/product/MissingArtworkMusic.svg";
+                                    artworkURL = "https://music.apple.com/assets/product/MissingArtworkMusic.svg";
                                 }
                                 if (mode === 1) {
                                     ipcRenderer.send('LyricsUpdate', "netease=" + trackName + " " + artistName, artworkURL);

@@ -4,7 +4,7 @@ try {
         if (!document.querySelector('#backButtonBar')) {
             document.getElementById('web-main').insertAdjacentHTML("afterbegin", `
                 <div id="backButtonBar">
-                    <div class="button-area" onclick="ipcRenderer.send('back');">
+                    <div class="button-area" id="backButtonClicked">
                         <img src="https://developer.apple.com/design/human-interface-guidelines/macos/images/icons/system-images/control/chevron-backward.png" alt="Back Button">
                     </div>
                 </div>
@@ -24,7 +24,12 @@ try {
                 document.getElementById('backButtonBar').style.position = 'absolute';
             }
         });
-        
+
+        /* listen to click event */
+        const backButtonPressed = document.getElementById('backButtonClicked');
+        backButtonPressed.addEventListener("click", () => {
+            ipcRenderer.send('back');
+        });
 
     }
 } catch (e) {

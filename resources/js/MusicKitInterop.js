@@ -1,8 +1,6 @@
 // preload.js
 const electron = require('electron');
 
-
-
 let cache = {playParams: {id: 0}, status: null, remainingTime: 0},
     playbackCache = {status: null, time: Date.now()};
 

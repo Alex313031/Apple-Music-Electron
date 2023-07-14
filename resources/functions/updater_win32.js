@@ -43,7 +43,7 @@ const UpdaterWin32 = {
     },
     updateUI () {
         let win = new BrowserWindow({
-            icon: join(__dirname, `../icons/icon.ico`),
+            icon: join(__dirname, '../icons/icon.ico'),
             width: 300,
             height: 300,
             resizable: false,

@@ -1,20 +1,18 @@
-const {
-    BrowserWindow, app
-} = require('electron');
-const {join} = require("path");
+const { BrowserWindow, components, app } = require('electron');
+const { join } = require("path");
 
 const SplashScreen = {
-    win: null,
+    splashWin: null,
     CreateWindow() {
         this.show()
         return SplashScreen
     },
     Destroy() {
-        this.win.destroy()
+        this.splashWin.destroy()
     },
     show: function () {
-        this.win = new BrowserWindow({
-            icon: join(__dirname, `../icons/icon.ico`),
+        this.splashWin = new BrowserWindow({
+            icon: process.platform === "linux" ? join(__dirname, '../icons/icon.png') : join(__dirname, '../icons/icon.ico'),
             width: 300,
             height: 300,
             resizable: false,
@@ -24,17 +22,17 @@ const SplashScreen = {
             title: app.getName(),
             frame: false,
             thickFrame: false,
-            skipTaskbar: true,
-            alwaysOnTop: true,
-            // skipTaskbar: true,
+            experimentalFeatures: true,
+            devTools: true,
+            webviewTag: true,
             webPreferences: {
                 nodeIntegration: true
             }
         })
-        this.win.show()
-        this.win.loadFile('./resources/splash/index.html')
-        this.win.on("closed", () => {
-            this.win = null
+        this.splashWin.show()
+        this.splashWin.loadFile("./resources/splash/index.html")
+        this.splashWin.on("closed", () => {
+            this.splashWin = null
         })
     }
 }

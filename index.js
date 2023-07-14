@@ -1,6 +1,9 @@
 require('v8-compile-cache');
 const {app, session} = require('electron');
 
+// Initialize Electron remote module
+require('@electron/remote/main').initialize();
+
 // Initialize the Preferences so verbose doesnt fuck up
 const appFuncs = require('./resources/functions/app-init');
 app.ame = appFuncs()
@@ -68,6 +71,8 @@ app.on('ready', () => {
     
     console.log('[Apple-Music-Electron] Application is Ready. Creating Window.')
     CreateWindow()
+    // Temporary workaround for the splash screen staying around
+    app.splash.Destroy()
 });
 
 // macOS Activate Handler

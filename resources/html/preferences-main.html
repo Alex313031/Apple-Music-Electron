@@ -685,13 +685,13 @@
         </ul>
     </div>
     <div class="app-prefs-section advanced">
-        <div class="app-prefs-title header-nav" onclick="AMSettings.revealCollapse()" style="height: 10px;">
+        <div class="app-prefs-title header-nav" style="height: 10px;">
             <div class="header-nav-content">
                 <h1 class="typography-header-emphasized">Advanced Settings</h1>
             </div>
             <img alt="Open Category" class="header-nav-image" src="ameres://icons/webui/down.svg">
         </div>
-        <ul class="settings-list advanced" id="advanced">
+        <ul class="settings-list advanced">
             <li class="app-prefs-dropdown">
                 <label class="typography-title-3-tall" for="forceApplicationMode">Application Mode</label>
                 <select class="form-dropdown-select list-element" id="forceApplicationMode" name="forceApplicationMode">
@@ -708,6 +708,12 @@
                     <span class="slider"></span>
                 </label>
                 <span class="app-prefs-help typography-title-3-tall">Turn on Hardware Acceleration, which uses your GPU to make the application smoother. Turn it off to reduce the overall resource consumption of the application, at the cost of some rendering not being as smooth.</span>
+            </li>
+            <li class="app-prefs-toggle">
+                <span class="typography-title-3-tall">Reinstall WidevineCDM</span>
+                <label class="list-button list-element" id="reinstallWidevineCDM"
+                       onclick="AMSettings.reinstallWidevineCDM()">Reinstall WidevineCDM</label>
+                <span class="app-prefs-help typography-title-3-tall">Reinstalls WidevineCDM to prevent DRM issues.</span>
             </li>
             <li class="app-prefs-toggle">
                 <span class="typography-title-3-tall">Verbose Logging</span>
