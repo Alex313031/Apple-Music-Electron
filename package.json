@@ -68,9 +68,6 @@
     "musickit-typescript": "^1.2.4",
     "webpack": "5.75.0"
   },
-  "resolutions": {
-    "webpack": "5.75.0"
-  },
   "fileAssociations": [
     {
       "name": "Apple Music Electron",
