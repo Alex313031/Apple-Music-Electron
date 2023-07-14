@@ -21,5 +21,5 @@ window.addEventListener('DOMContentLoaded', () => {
     if (element) element.innerText = text
   };
 
-  replaceText('apple-music-version', appVersion);
+  replaceText('ame-version', appVersion);
 });
