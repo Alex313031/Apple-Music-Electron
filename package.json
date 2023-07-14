@@ -65,9 +65,10 @@
   "devDependencies": {
     "electron": "git+https://github.com/castlabs/electron-releases.git#bd10a32",
     "electron-builder": "23.6.0",
-    "electron-to-chromium": "1.4.333",
-    "electron-webpack": "^2.8.2",
     "musickit-typescript": "^1.2.4",
+    "webpack": "5.75.0"
+  },
+  "resolutions": {
     "webpack": "5.75.0"
   },
   "fileAssociations": [

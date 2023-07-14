@@ -2,7 +2,7 @@ node_modules
 /dist/
 .idea
 yarn.lock
-package-lock.json
+# package-lock.json
 .DS_Store
 yarn-error.log
 .yarnclean
