@@ -429,7 +429,7 @@ module.exports = {
             y: mainWindowState.y,
             minWidth: (app.cfg.get('visual.streamerMode') ? 400 : 300),
             minHeight: ((app.cfg.get('visual.frameType') === 'mac' || app.cfg.get('visual.frameType') === 'mac-right') ? (app.cfg.get('visual.streamerMode')? 55 : 300) : (app.cfg.get('visual.streamerMode') ? 115 : 300)),
-            frame: (process.platform !== 'win32' && !(app.cfg.get('visual.frameType') === 'mac' || app.cfg.get('visual.frameType') === 'mac-right')),
+            frame: true,
             title: app.getName(),
             resizable: true,
             toolbar: true,
